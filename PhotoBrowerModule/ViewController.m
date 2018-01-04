@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "FCPhotoBrowerViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <FCPhotoBrowerViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *imageViewArr;
 
@@ -46,13 +46,26 @@
 
 - (void)tapAction:(UITapGestureRecognizer *)tap{
     FCPhotoBrowerViewController *browerVC = [[FCPhotoBrowerViewController alloc] initWithImageLinkArray:nil thumbnailArray:_imageViewArr index:tap.view.tag];
+    browerVC.delegate = self;
     [browerVC showBrowerFromVC:self];
 }
 
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - delegate
+- (void)fc_browerViewWillShow{
+    NSLog(@"%@",NSStringFromSelector(_cmd));
+}
+- (void)fc_browerViewShowSuccess{
+    NSLog(@"%@",NSStringFromSelector(_cmd));
+}
+- (void)fc_browerViewWillDismiss{
+    NSLog(@"%@",NSStringFromSelector(_cmd));
+}
+- (void)fc_browerViewDismissSuccess{
+    NSLog(@"%@",NSStringFromSelector(_cmd));
+}
+- (void)fc_browerViewLongPressedIndex:(NSInteger)index{
+    NSLog(@"%@",NSStringFromSelector(_cmd));
 }
 
 

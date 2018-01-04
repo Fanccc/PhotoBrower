@@ -116,8 +116,12 @@
     cell.singleTapGestureBlock = ^{
         [weakSelf hideBrowerView];
     };
+    
     cell.longPressGestureBlock = ^{
-        
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if(strongSelf.delegate && [strongSelf.delegate respondsToSelector:@selector(fc_browerViewLongPressedIndex:)]){
+            [strongSelf.delegate fc_browerViewLongPressedIndex:strongSelf.scrollIndex];
+        }
     };
     return cell;
 }
