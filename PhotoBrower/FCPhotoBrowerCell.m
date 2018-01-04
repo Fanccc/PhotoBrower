@@ -7,6 +7,7 @@
 //
 
 #import "FCPhotoBrowerCell.h"
+#import <UIImageView+WebCache.h>
 #import "UIView+Sizes.h"
 
 @interface FCPhotoBrowerCell() <UIScrollViewDelegate>
@@ -65,7 +66,13 @@
 
 - (void)configCellthumbnail:(UIImage *)thumbnail imageLink:(NSString *)imagelink{
     [_scrollView setZoomScale:1.0 animated:NO];
-    self.imageView.image = thumbnail;
+    if(imagelink){
+        [self.imageView sd_setImageWithURL:[NSURL URLWithString:imagelink] placeholderImage:thumbnail completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            [self resizeSubviews];
+        }];
+    }else{
+        self.imageView.image = thumbnail;
+    }
     [self resizeSubviews];
 }
 
