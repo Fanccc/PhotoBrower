@@ -58,17 +58,28 @@
 
 #pragma mark - pubilc method
 - (void)showBrowerFromVC:(UIViewController *)sourceVC{
+    if(_delegate && [_delegate respondsToSelector:@selector(fc_browerViewWillShow)]){
+        [_delegate fc_browerViewWillShow];
+    }
     self.collectionView.hidden = YES;
     [sourceVC presentViewController:self animated:YES completion:^{
         self.collectionView.hidden = NO;
-        
+        if(_delegate && [_delegate respondsToSelector:@selector(fc_browerViewShowSuccess)]){
+            [_delegate fc_browerViewShowSuccess];
+        }
     }];
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:self.scrollIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
 }
 
 - (void)hideBrowerView{
+    if(_delegate && [_delegate respondsToSelector:@selector(fc_browerViewWillDismiss)]){
+        [_delegate fc_browerViewWillDismiss];
+    }
     self.collectionView.hidden = YES;
     [self dismissViewControllerAnimated:YES completion:^{
+        if(_delegate && [_delegate respondsToSelector:@selector(fc_browerViewDismissSuccess)]){
+            [_delegate fc_browerViewDismissSuccess];
+        }
     }];
 }
 

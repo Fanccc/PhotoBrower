@@ -124,7 +124,6 @@
     return self.imageView;
 }
 
-
 #pragma mark - UIScrollViewDelegate
 - (nullable UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return _imageContainerView;

@@ -10,6 +10,12 @@
 
 @protocol FCPhotoBrowerViewControllerDelegate<NSObject>
 
+@optional
+- (void)fc_browerViewWillShow;
+- (void)fc_browerViewShowSuccess;
+- (void)fc_browerViewWillDismiss;
+- (void)fc_browerViewDismissSuccess;
+- (void)fc_browerViewLongPressedIndex:(NSInteger)index;
 
 @end
 
