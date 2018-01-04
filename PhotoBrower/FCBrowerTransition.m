@@ -74,6 +74,8 @@
     animationImageView.clipsToBounds = YES;
     animationImageView.contentMode = UIViewContentModeScaleAspectFill;
     
+    self.clickImageView.hidden = YES;
+    
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         
         animationImageView.size = imageSize;
@@ -81,6 +83,8 @@
         toView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:1];
         
     } completion:^(BOOL finished) {
+        self.clickImageView.hidden = NO;
+
         [animationImageView removeFromSuperview];
         animationImageView = nil;
         [conView removeFromSuperview];
@@ -101,11 +105,13 @@
     [fromView addSubview:imageView];
     imageView.frame = fromRect;
     
+    self.clickImageView.hidden = YES;
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         fromView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
         imageView.frame = toRect;
         
     } completion:^(BOOL finished) {
+        self.clickImageView.hidden = NO;
         [imageView removeFromSuperview];
         imageView = nil;
         [transitionContext completeTransition:YES];
