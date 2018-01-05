@@ -86,7 +86,7 @@
     if(_delegate && [_delegate respondsToSelector:@selector(fc_browerViewWillDismiss)]){
         [_delegate fc_browerViewWillDismiss];
     }
-    self.collectionView.hidden = YES;
+    //self.collectionView.hidden = YES;
     [self dismissViewControllerAnimated:YES completion:^{
         if(_delegate && [_delegate respondsToSelector:@selector(fc_browerViewDismissSuccess)]){
             [_delegate fc_browerViewDismissSuccess];
@@ -180,11 +180,24 @@
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
     if(self.isMoveHidden){
         self.isMoveHidden = NO;
-        return [[FCBrowerTransition alloc] initDismissWithImageView:self.currentShowImageView startImageView:self.moveImageView];
+        FCBrowerTransition *transition = [[FCBrowerTransition alloc] initDismissWithImageView:self.currentShowImageView startImageView:self.moveImageView];
+        transition.dismissPrepareSucBlock = ^{
+            /*
+             在这里隐藏 collectionView
+             在dismiss 之前隐藏 有时会有一定的延迟闪烁.
+             */
+            self.collectionView.hidden = YES;
+        };
+        return transition;
     }
+    
     self.isMoveHidden = NO;
     FCPhotoBrowerCell *currentShowCell = (FCPhotoBrowerCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.scrollIndex inSection:0]];
-    return [[FCBrowerTransition alloc] initDismissWithImageView:self.currentShowImageView startImageView:[currentShowCell currentImageView]];
+    FCBrowerTransition *transition = [[FCBrowerTransition alloc] initDismissWithImageView:self.currentShowImageView startImageView:[currentShowCell currentImageView]];
+    transition.dismissPrepareSucBlock = ^{
+        self.collectionView.hidden = YES;
+    };
+    return transition;
 }
 
 

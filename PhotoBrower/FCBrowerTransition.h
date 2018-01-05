@@ -16,4 +16,6 @@
 
 - (instancetype)initDismissWithImageView:(UIImageView *)imageView startImageView:(UIImageView *)startImageView;;
 
+@property (nonatomic, copy) void(^dismissPrepareSucBlock)(void);
+
 @end

@@ -112,6 +112,10 @@
     [fromView addSubview:imageView];
     imageView.frame = fromRect;
     
+    if(self.dismissPrepareSucBlock){
+        self.dismissPrepareSucBlock();
+    }
+    
     self.clickImageView.hidden = YES;
     [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
         fromView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
