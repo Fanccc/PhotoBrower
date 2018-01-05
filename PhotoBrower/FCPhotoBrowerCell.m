@@ -10,7 +10,7 @@
 #import <UIImageView+WebCache.h>
 #import "UIView+Sizes.h"
 
-const CGFloat kDefaultImageHeight = 100.0f;
+const CGFloat kDefaultImageHeight = 300.0f;
 static const CGFloat minScale = 0.6f;
 static const CGFloat maximumOffset = 200.0f;
 

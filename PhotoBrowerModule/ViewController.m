@@ -69,7 +69,7 @@
 }
 
 - (void)tapAction:(UITapGestureRecognizer *)tap{
-//    FCPhotoBrowerViewController *browerVC = [[FCPhotoBrowerViewController alloc] initWithImageLinkArray:nil thumbnailArray:_imageViewArr index:tap.view.tag];
+ //  FCPhotoBrowerViewController *browerVC = [[FCPhotoBrowerViewController alloc] initWithImageLinkArray:nil thumbnailArray:_imageViewArr index:tap.view.tag];
     FCPhotoBrowerViewController *browerVC = [[FCPhotoBrowerViewController alloc] initWithImageLinkArray:_array thumbnailArray:_imageViewArr index:tap.view.tag];
     browerVC.delegate = self;
     [browerVC showBrowerFromVC:self];
