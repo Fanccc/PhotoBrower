@@ -74,19 +74,19 @@
 
 #pragma mark - delegate
 - (void)fc_browerViewWillShow{
-    NSLog(@"%@",NSStringFromSelector(_cmd));
+    //NSLog(@"%@",NSStringFromSelector(_cmd));
 }
 - (void)fc_browerViewShowSuccess{
-    NSLog(@"%@",NSStringFromSelector(_cmd));
+    //NSLog(@"%@",NSStringFromSelector(_cmd));
 }
 - (void)fc_browerViewWillDismiss{
-    NSLog(@"%@",NSStringFromSelector(_cmd));
+    //NSLog(@"%@",NSStringFromSelector(_cmd));
 }
 - (void)fc_browerViewDismissSuccess{
-    NSLog(@"%@",NSStringFromSelector(_cmd));
+    //NSLog(@"%@",NSStringFromSelector(_cmd));
 }
 - (void)fc_browerViewLongPressedIndex:(NSInteger)index{
-    NSLog(@"%@",NSStringFromSelector(_cmd));
+    //NSLog(@"%@",NSStringFromSelector(_cmd));
 }
 
 

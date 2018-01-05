@@ -12,9 +12,9 @@
 
 @property (nonatomic, copy) void (^singleTapGestureBlock)(void);
 @property (nonatomic, copy) void (^longPressGestureBlock)(void);
-
-//用来控制显示和消失的block
 @property (nonatomic, copy) void (^panGestureChangeBlock)(CGFloat);
+@property (nonatomic, copy) void (^panGestureEndFixBlock)(CGFloat);
+
 @property (nonatomic, copy) void (^panGestureEndGoDismissBlock)(UIImageView *moveImageView);
 
 

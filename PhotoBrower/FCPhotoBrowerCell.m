@@ -13,7 +13,6 @@
 static const CGFloat minScale = 0.6f;
 static const CGFloat maximumOffset = 200.0f;
 
-
 @interface FCPhotoBrowerCell() <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -147,6 +146,10 @@ static const CGFloat maximumOffset = 200.0f;
                 _moveImage.hidden = YES;
                 self.imageContainerView.hidden = NO;
             }];
+            
+            if(self.panGestureEndFixBlock){
+                self.panGestureEndFixBlock(1);
+            }
         }else{
             if(self.panGestureEndGoDismissBlock){
             self.panGestureEndGoDismissBlock(self.moveImage);
@@ -233,6 +236,43 @@ static const CGFloat maximumOffset = 200.0f;
     CGFloat offsetY = (scrollView.height > scrollView.contentSize.height) ? (scrollView.height - scrollView.contentSize.height) * 0.5 : 0.0;
     self.imageContainerView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX, scrollView.contentSize.height * 0.5 + offsetY);
 }
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer{
+    if([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]){
+        UIPanGestureRecognizer *pan =(UIPanGestureRecognizer *)gestureRecognizer;
+        CGPoint translation = [pan translationInView:pan.view];;
+        
+        CGFloat absX = fabs(translation.x);
+        CGFloat absY = fabs(translation.y);
+        
+        // 设置滑动有效距离
+        if (MAX(absX, absY) < 2){
+            return NO;
+        }
+        
+        if (absX > absY ) {
+            if (translation.x<0) {
+                //向左滑动
+                return NO;
+            }else{
+                //向右滑动
+                return NO;
+            }
+        } else if (absY > absX) {
+            if (translation.y<0) {
+                //向上滑动
+                return NO;
+            }else{
+                //向下滑动
+                return YES;
+            }
+        }
+        return YES;
+    }
+    return YES;
+}
+
 
 
 @end

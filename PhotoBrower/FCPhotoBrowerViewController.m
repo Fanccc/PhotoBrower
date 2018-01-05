@@ -131,6 +131,14 @@
         strongSelf.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:scale];
         strongSelf.currentShowImageView.hidden = YES;
     };
+    cell.panGestureEndFixBlock = ^(CGFloat scale) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        [UIView animateWithDuration:0.3f animations:^{
+            strongSelf.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:1];
+        } completion:^(BOOL finished) {
+            strongSelf.currentShowImageView.hidden = NO;
+        }];
+    };
     cell.panGestureEndGoDismissBlock = ^(UIImageView *moveImageView){
         __strong typeof(weakSelf) strongSelf = weakSelf;
         strongSelf.moveImageView = moveImageView;
