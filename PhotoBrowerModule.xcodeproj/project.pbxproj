@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0029B8AE1FFF7247007A4DF5 /* FCImageLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0029B8AD1FFF7247007A4DF5 /* FCImageLoadingView.m */; };
 		005BE18D1FFDCACA00D3D3DD /* FCPhotoBrowerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 005BE18C1FFDCACA00D3D3DD /* FCPhotoBrowerCell.m */; };
 		005BE1941FFDCB9300D3D3DD /* UIView+Sizes.m in Sources */ = {isa = PBXBuildFile; fileRef = 005BE1931FFDCB9300D3D3DD /* UIView+Sizes.m */; };
 		005BE1971FFDF5CB00D3D3DD /* FCBrowerTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 005BE1961FFDF5CB00D3D3DD /* FCBrowerTransition.m */; };
@@ -21,6 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0029B8AC1FFF7247007A4DF5 /* FCImageLoadingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCImageLoadingView.h; sourceTree = "<group>"; };
+		0029B8AD1FFF7247007A4DF5 /* FCImageLoadingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCImageLoadingView.m; sourceTree = "<group>"; };
 		005BE18B1FFDCAC900D3D3DD /* FCPhotoBrowerCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCPhotoBrowerCell.h; sourceTree = "<group>"; };
 		005BE18C1FFDCACA00D3D3DD /* FCPhotoBrowerCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCPhotoBrowerCell.m; sourceTree = "<group>"; };
 		005BE1921FFDCB9300D3D3DD /* UIView+Sizes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Sizes.h"; sourceTree = "<group>"; };
@@ -110,6 +113,8 @@
 				005BE18C1FFDCACA00D3D3DD /* FCPhotoBrowerCell.m */,
 				005BE1951FFDF5CB00D3D3DD /* FCBrowerTransition.h */,
 				005BE1961FFDF5CB00D3D3DD /* FCBrowerTransition.m */,
+				0029B8AC1FFF7247007A4DF5 /* FCImageLoadingView.h */,
+				0029B8AD1FFF7247007A4DF5 /* FCImageLoadingView.m */,
 			);
 			path = PhotoBrower;
 			sourceTree = SOURCE_ROOT;
@@ -260,6 +265,7 @@
 				009F5A7A1FFCEF6D002F1D8A /* ViewController.m in Sources */,
 				005BE1941FFDCB9300D3D3DD /* UIView+Sizes.m in Sources */,
 				009F5A851FFCEF6D002F1D8A /* main.m in Sources */,
+				0029B8AE1FFF7247007A4DF5 /* FCImageLoadingView.m in Sources */,
 				009F5A771FFCEF6D002F1D8A /* AppDelegate.m in Sources */,
 				005BE18D1FFDCACA00D3D3DD /* FCPhotoBrowerCell.m in Sources */,
 				009F5A8F1FFCEFC9002F1D8A /* FCPhotoBrowerViewController.m in Sources */,

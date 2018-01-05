@@ -9,6 +9,7 @@
 #import "FCPhotoBrowerCell.h"
 #import <UIImageView+WebCache.h>
 #import "UIView+Sizes.h"
+#import "FCImageLoadingView.h"
 
 const CGFloat kDefaultImageHeight = 300.0f;
 static const CGFloat minScale = 0.6f;
@@ -19,6 +20,7 @@ static const CGFloat maximumOffset = 200.0f;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIView *imageContainerView;
+@property (nonatomic, strong) FCImageLoadingView *loadingView;
 
 @property (nonatomic, strong) UIImageView *moveImage;
 @property (nonatomic, assign) CGPoint oldPoint;
@@ -60,6 +62,9 @@ static const CGFloat maximumOffset = 200.0f;
         _imageView = [[UIImageView alloc] init];
         _imageView.clipsToBounds = YES;
         [_imageContainerView addSubview:_imageView];
+        
+        _loadingView = [[FCImageLoadingView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        [_imageContainerView addSubview:_loadingView];
         
         UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTap:)];
         [self addGestureRecognizer:tap1];
@@ -164,8 +169,12 @@ static const CGFloat maximumOffset = 200.0f;
 - (void)configCellthumbnail:(UIImage *)thumbnail imageLink:(NSString *)imagelink{
     [_scrollView setZoomScale:1.0 animated:NO];
     if(imagelink){
+        __weak typeof(self) weakSelf = self;
+        [self.loadingView startAnimation];
         [self.imageView sd_setImageWithURL:[NSURL URLWithString:imagelink] placeholderImage:thumbnail completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-            [self resizeSubviews];
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            [strongSelf.loadingView endAnimation];
+            [strongSelf resizeSubviews];
         }];
     }else{
         self.imageView.image = thumbnail;
@@ -199,6 +208,8 @@ static const CGFloat maximumOffset = 200.0f;
     _scrollView.contentSize = CGSizeMake(self.width, MAX(_imageContainerView.height, self.height));
     [_scrollView scrollRectToVisible:self.bounds animated:NO];
     _imageView.frame = _imageContainerView.bounds;
+    
+    _loadingView.center = CGPointMake(_imageContainerView.width/2, _imageContainerView.height/2);
 }
 
 
