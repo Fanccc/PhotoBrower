@@ -10,6 +10,7 @@
 #import <UIImageView+WebCache.h>
 #import "UIView+Sizes.h"
 
+const CGFloat kDefaultImageHeight = 100.0f;
 static const CGFloat minScale = 0.6f;
 static const CGFloat maximumOffset = 200.0f;
 
@@ -85,6 +86,7 @@ static const CGFloat maximumOffset = 200.0f;
         if(!_moveImage){
             _moveImage = [[UIImageView alloc] initWithImage:self.imageView.image];
             [self.contentView addSubview:_moveImage];
+            _moveImage.backgroundColor = self.imageView.backgroundColor;
         }
         _moveImage.hidden = NO;
         _moveImage.frame = [self.imageContainerView convertRect:self.imageView.bounds toView:self.contentView];
@@ -168,6 +170,7 @@ static const CGFloat maximumOffset = 200.0f;
     }else{
         self.imageView.image = thumbnail;
     }
+    self.imageView.backgroundColor = [UIColor grayColor];
     [self resizeSubviews];
 }
 
@@ -176,21 +179,25 @@ static const CGFloat maximumOffset = 200.0f;
     _imageContainerView.width = self.width;
     
     UIImage *image = _imageView.image;
-    if (image.size.height / image.size.width > self.height / self.width) {
-        _imageContainerView.height = floor(image.size.height / (image.size.width / self.width));
-    } else {
-        CGFloat height = image.size.height / image.size.width * self.width;
-        if (height < 1 || isnan(height)) height = self.height;
-        height = floor(height);
-        _imageContainerView.height = height;
+    if(image){
+        if (image.size.height / image.size.width > self.height / self.width) {
+            _imageContainerView.height = floor(image.size.height / (image.size.width / self.width));
+        } else {
+            CGFloat height = image.size.height / image.size.width * self.width;
+            if (height < 1 || isnan(height)) height = self.height;
+            height = floor(height);
+            _imageContainerView.height = height;
+            _imageContainerView.centerY = self.height / 2;
+        }
+        if (_imageContainerView.height > self.height && _imageContainerView.height - self.height <= 1) {
+            _imageContainerView.height = self.height;
+        }
+    }else{
+        _imageContainerView.height = kDefaultImageHeight;
         _imageContainerView.centerY = self.height / 2;
-    }
-    if (_imageContainerView.height > self.height && _imageContainerView.height - self.height <= 1) {
-        _imageContainerView.height = self.height;
     }
     _scrollView.contentSize = CGSizeMake(self.width, MAX(_imageContainerView.height, self.height));
     [_scrollView scrollRectToVisible:self.bounds animated:NO];
-   // _scrollView.alwaysBounceVertical = _imageContainerView.height <= self.height ? NO : YES;
     _imageView.frame = _imageContainerView.bounds;
 }
 

@@ -8,6 +8,7 @@
 
 #import "FCBrowerTransition.h"
 #import "UIView+Sizes.h"
+#import "FCPhotoBrowerCell.h"
 
 @interface FCBrowerTransition()
 
@@ -61,6 +62,10 @@
     CGRect rect = [self.clickImageView convertRect:self.clickImageView.bounds toView:toView];
     
     CGSize imageSize = CGSizeMake(toView.width, toView.width/(self.clickImageView.image.size.width/self.clickImageView.image.size.height));
+    if(!self.clickImageView.image){
+        extern CGFloat kDefaultImageHeight;
+        imageSize = CGSizeMake(toView.width, kDefaultImageHeight);
+    }
     CGSize contentSize = CGSizeMake(toView.width, MAX(imageSize.height, toView.height));
     
     __block UIView *conView = [[UIView alloc] init];
@@ -70,6 +75,7 @@
     
     __block UIImageView *animationImageView = [[UIImageView alloc] initWithImage:self.clickImageView.image];
     animationImageView.frame = rect;
+    animationImageView.backgroundColor = self.clickImageView.backgroundColor;
     [conView addSubview:animationImageView];
     animationImageView.clipsToBounds = YES;
     animationImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -102,6 +108,7 @@
     __block UIImageView *imageView = [[UIImageView alloc] initWithImage:self.startImageView.image];
     imageView.clipsToBounds = YES;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.backgroundColor = self.startImageView.backgroundColor;
     [fromView addSubview:imageView];
     imageView.frame = fromRect;
     
