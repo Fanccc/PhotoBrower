@@ -21,6 +21,9 @@
 //UI
 @property (nonatomic, strong) UICollectionView *collectionView;
 
+@property (nonatomic, strong) UIImageView *moveImageView;
+@property (nonatomic, assign) BOOL isMoveHidden;
+
 @end
 
 @implementation FCPhotoBrowerViewController
@@ -95,7 +98,7 @@
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     _collectionView.showsHorizontalScrollIndicator = NO;
-    _collectionView.backgroundColor = [UIColor blackColor];
+    _collectionView.backgroundColor = [UIColor clearColor];
     [_collectionView registerClass:[FCPhotoBrowerCell class] forCellWithReuseIdentifier:[FCPhotoBrowerCell description]];
     _collectionView.pagingEnabled = YES;
     [self.view addSubview:_collectionView];
@@ -123,6 +126,17 @@
             [strongSelf.delegate fc_browerViewLongPressedIndex:strongSelf.scrollIndex];
         }
     };
+    cell.panGestureChangeBlock = ^(CGFloat scale) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:scale];
+        strongSelf.currentShowImageView.hidden = YES;
+    };
+    cell.panGestureEndGoDismissBlock = ^(UIImageView *moveImageView){
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        strongSelf.moveImageView = moveImageView;
+        strongSelf.isMoveHidden = YES;
+        [strongSelf hideBrowerView];
+    };
     return cell;
 }
 
@@ -141,6 +155,11 @@
 }
 
 - (nullable id <UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed{
+    if(self.isMoveHidden){
+        self.isMoveHidden = NO;
+        return [[FCBrowerTransition alloc] initDismissWithImageView:self.currentShowImageView startImageView:self.moveImageView];
+    }
+    self.isMoveHidden = NO;
     FCPhotoBrowerCell *currentShowCell = (FCPhotoBrowerCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.scrollIndex inSection:0]];
     return [[FCBrowerTransition alloc] initDismissWithImageView:self.currentShowImageView startImageView:[currentShowCell currentImageView]];
 }

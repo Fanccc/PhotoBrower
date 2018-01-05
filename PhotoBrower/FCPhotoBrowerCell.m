@@ -10,12 +10,24 @@
 #import <UIImageView+WebCache.h>
 #import "UIView+Sizes.h"
 
-@interface FCPhotoBrowerCell() <UIScrollViewDelegate>
+static const CGFloat minScale = 0.6f;
+static const CGFloat maximumOffset = 200.0f;
+
+
+@interface FCPhotoBrowerCell() <UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIView *imageContainerView;
 
+@property (nonatomic, strong) UIImageView *moveImage;
+@property (nonatomic, assign) CGPoint oldPoint;
+@property (nonatomic, assign) CGPoint oldCenter;
+@property (nonatomic, assign) CGFloat oldWidth;
+@property (nonatomic, assign) CGFloat oldHeight;
+@property (nonatomic, assign) CGFloat panWidth;
+@property (nonatomic, assign) CGFloat panHeight;
+@property (nonatomic, assign) CGFloat currentScale;
 
 @end
 
@@ -23,7 +35,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if(self = [super initWithFrame:frame]){
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = [UIColor clearColor];
         
         _scrollView = [[UIScrollView alloc] init];
         _scrollView.frame = CGRectMake(0, 0, self.width, self.height);
@@ -60,8 +72,88 @@
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
         [self addGestureRecognizer:longPress];
         
+        
+        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panEvent:)];
+        pan.delegate = self;
+        [self addGestureRecognizer:pan];
+        
     }
     return self;
+}
+
+- (void)panEvent:(UIPanGestureRecognizer *)pan{
+    if(pan.state == UIGestureRecognizerStateBegan){
+        if(!_moveImage){
+            _moveImage = [[UIImageView alloc] initWithImage:self.imageView.image];
+            [self.contentView addSubview:_moveImage];
+        }
+        _moveImage.hidden = NO;
+        _moveImage.frame = [self.imageContainerView convertRect:self.imageView.bounds toView:self.contentView];
+        self.imageContainerView.hidden = YES;
+        
+        //用来平移
+        self.oldPoint = [pan locationInView:pan.view];
+        //用来还原位置
+        self.oldCenter = _moveImage.center;
+        self.oldWidth = _moveImage.width;
+        self.oldHeight = _moveImage.height;
+        //用来控制缩放位置
+        self.panWidth = self.oldWidth;
+        self.panHeight = self.oldHeight;
+        //比例
+        self.currentScale = 1;
+        
+    }else if (pan.state == UIGestureRecognizerStateChanged){
+        
+        //当前点
+        CGPoint point = [pan locationInView:pan.view];
+        CGFloat x = point.x;
+        CGFloat y =  point.y;
+        
+        //偏移量
+        CGFloat offset = _moveImage.centerY - self.oldCenter.y;
+        
+        CGFloat scale = (1 - offset/maximumOffset <= minScale)?minScale:1 - offset/maximumOffset;
+        if(scale > 1){
+            scale = 1;
+        }
+        self.currentScale = scale;
+        
+        if(self.panGestureChangeBlock){
+            self.panGestureChangeBlock(scale);
+        }
+        
+        self.moveImage.width = self.oldWidth *scale;
+        self.moveImage.height = self.oldHeight *scale;
+        
+        //修复中心点位置使用
+        CGFloat pan_x = (self.panWidth - self.moveImage.width)/2;
+        CGFloat pan_y = (self.panHeight - self.moveImage.height)/2;
+        
+        self.panWidth = self.moveImage.width;
+        self.panHeight = self.moveImage.height;
+        
+        _moveImage.center =CGPointMake(_moveImage.centerX + (x - self.oldPoint.x) + pan_x, _moveImage.centerY + (y - self.oldPoint.y) + pan_y);
+        
+        //更新最新点
+        self.oldPoint = point;
+    }else{
+        if(self.currentScale > minScale){
+            [UIView animateWithDuration:0.3f animations:^{
+                _moveImage.width = self.oldWidth;
+                _moveImage.height = self.oldHeight;
+                _moveImage.center = self.oldCenter ;
+            } completion:^(BOOL finished) {
+                _moveImage.hidden = YES;
+                self.imageContainerView.hidden = NO;
+            }];
+        }else{
+            if(self.panGestureEndGoDismissBlock){
+            self.panGestureEndGoDismissBlock(self.moveImage);
+                self.moveImage.hidden = YES;
+            }
+        }
+    }
 }
 
 - (void)configCellthumbnail:(UIImage *)thumbnail imageLink:(NSString *)imagelink{
