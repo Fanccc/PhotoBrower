@@ -39,6 +39,12 @@
                        ];
     
     
+//    _array = @[
+//               @"image_0",
+//               @"image_1",
+//               @"image_2"
+//               ];
+    
     for (int i = 0; i < _array.count; i++) {
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(20, 20 + (10 + 80) * i, 80, 80)];
@@ -52,6 +58,7 @@
         [self.view addSubview:imageView];
         imageView.backgroundColor = [UIColor grayColor];
         [imageView sd_setImageWithURL:[NSURL URLWithString:[self thumbUrlWithUrl:_array[i] width:160 height:160]]];
+       // imageView.image = [UIImage imageNamed:_array[i]];
         [_imageViewArr addObject:imageView];
         imageView.tag = i;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
@@ -62,6 +69,7 @@
 }
 
 - (void)tapAction:(UITapGestureRecognizer *)tap{
+//    FCPhotoBrowerViewController *browerVC = [[FCPhotoBrowerViewController alloc] initWithImageLinkArray:nil thumbnailArray:_imageViewArr index:tap.view.tag];
     FCPhotoBrowerViewController *browerVC = [[FCPhotoBrowerViewController alloc] initWithImageLinkArray:_array thumbnailArray:_imageViewArr index:tap.view.tag];
     browerVC.delegate = self;
     [browerVC showBrowerFromVC:self];

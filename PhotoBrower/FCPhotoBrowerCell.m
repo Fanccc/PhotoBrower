@@ -190,7 +190,7 @@ static const CGFloat maximumOffset = 200.0f;
     }
     _scrollView.contentSize = CGSizeMake(self.width, MAX(_imageContainerView.height, self.height));
     [_scrollView scrollRectToVisible:self.bounds animated:NO];
-    _scrollView.alwaysBounceVertical = _imageContainerView.height <= self.height ? NO : YES;
+   // _scrollView.alwaysBounceVertical = _imageContainerView.height <= self.height ? NO : YES;
     _imageView.frame = _imageContainerView.bounds;
 }
 
@@ -247,7 +247,7 @@ static const CGFloat maximumOffset = 200.0f;
         CGFloat absY = fabs(translation.y);
         
         // 设置滑动有效距离
-        if (MAX(absX, absY) < 2){
+        if (MAX(absX, absY) < 1){
             return NO;
         }
         
@@ -273,6 +273,8 @@ static const CGFloat maximumOffset = 200.0f;
     return YES;
 }
 
-
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    return self.imageView.image.size.height > self.imageView.image.size.width;
+}
 
 @end

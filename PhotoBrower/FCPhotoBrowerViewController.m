@@ -29,7 +29,9 @@
 @implementation FCPhotoBrowerViewController
 
 - (void)dealloc{
-    NSLog(@"FCPhotoBrowerViewController dealloc");
+#ifdef DEBUG
+    NSLog(@"%@ dealloc",[self.class description]);
+#endif
 }
 
 - (instancetype)initWithImageLinkArray:(NSArray<NSString *> *)imageLinkArray thumbnailArray:(NSArray<UIImageView *> *)thumbnailArray index:(NSUInteger)index{
