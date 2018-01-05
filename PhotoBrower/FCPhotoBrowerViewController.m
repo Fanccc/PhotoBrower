@@ -49,7 +49,7 @@
             _scrollIndex = index;
         }else{
             _currentShowImageView = self.thumbnailArray.firstObject;
-            _scrollIndex = index;
+            _scrollIndex = 0;
         }
     }
     return self;
@@ -63,6 +63,11 @@
 
 #pragma mark - pubilc method
 - (void)showBrowerFromVC:(UIViewController *)sourceVC{
+    
+    if(self.thumbnailArray.count <= 0){
+        return;
+    }
+    
     if(_delegate && [_delegate respondsToSelector:@selector(fc_browerViewWillShow)]){
         [_delegate fc_browerViewWillShow];
     }
