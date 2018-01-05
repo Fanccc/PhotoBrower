@@ -20,6 +20,7 @@
 
 //UI
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UIPageControl *pageControl;
 
 @property (nonatomic, strong) UIImageView *moveImageView;
 @property (nonatomic, assign) BOOL isMoveHidden;
@@ -110,6 +111,12 @@
     _collectionView.pagingEnabled = YES;
     [self.view addSubview:_collectionView];
     _collectionView.hidden = YES;
+    
+    _pageControl = [[UIPageControl alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 10)];
+    _pageControl.bottom = self.view.height - 30;
+    _pageControl.numberOfPages = self.thumbnailArray.count;
+    [self.view addSubview:_pageControl];
+    _pageControl.currentPage = self.scrollIndex;
 }
 
 #pragma mark - collection delegate
@@ -162,6 +169,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     _scrollIndex = (NSInteger)(scrollView.contentOffset.x/scrollView.width);
     _currentShowImageView = self.thumbnailArray[_scrollIndex];
+    _pageControl.currentPage = _scrollIndex;
 }
 
 #pragma mark - translation delegate
